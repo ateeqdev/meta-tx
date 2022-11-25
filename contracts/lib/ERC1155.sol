@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
-import "@openzeppelin/contracts/metatx/Context.sol";
+import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
 /**
@@ -17,7 +17,7 @@ import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
  *
  * _Available since v3.1._
  */
-contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
+contract ERC1155 is ERC2771Context, ERC165, IERC1155, IERC1155MetadataURI {
     using Address for address;
 
     // Mapping from token ID to account balances
@@ -32,7 +32,10 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
     /**
      * @dev See {_setURI}.
      */
-    constructor(string memory uri_) {
+    constructor(
+        string memory uri_,
+        address _forwarder
+    ) ERC2771Context(address(_forwarder)) {
         _setURI(uri_);
     }
 

@@ -3,7 +3,7 @@
 
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/utils/Context.sol";
+import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 
 /**
  * @dev Contract module which provides a basic access control mechanism, where
@@ -17,10 +17,13 @@ import "@openzeppelin/contracts/utils/Context.sol";
  * `onlyOwner`, which can be applied to your functions to restrict their use to
  * the owner.
  */
-abstract contract Ownable is Context {
+abstract contract MetaOwnable is ERC2771Context {
     address private _owner;
 
-    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+    event OwnershipTransferred(
+        address indexed previousOwner,
+        address indexed newOwner
+    );
 
     /**
      * @dev Initializes the contract setting the deployer as the initial owner.
@@ -67,7 +70,10 @@ abstract contract Ownable is Context {
      * Can only be called by the current owner.
      */
     function transferOwnership(address newOwner) public virtual onlyOwner {
-        require(newOwner != address(0), "Ownable: new owner is the zero address");
+        require(
+            newOwner != address(0),
+            "Ownable: new owner is the zero address"
+        );
         _transferOwnership(newOwner);
     }
 

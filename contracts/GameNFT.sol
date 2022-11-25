@@ -2,13 +2,13 @@
 pragma solidity ^0.8.4;
 
 import "./lib/ERC1155.sol";
-import "./lib/Ownable.sol";
+import "./lib/MetaOwnable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 /// @title Standard ERC1155 NFT.
 /// @author Ateeq.
-contract GameNFT is ERC1155, Ownable {
-    constructor() ERC1155("") {
+contract GameNFT is ERC1155, MetaOwnable {
+    constructor(address _forwarder) ERC1155("", _forwarder) {
         _transferOwnership(_msgSender());
     }
 
