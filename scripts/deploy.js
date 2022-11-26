@@ -5,12 +5,12 @@ const hardhat = require("hardhat");
 var args = [];
 
 var contracts = {
-  minimalForwarder: {
+  MinimalForwarder: {
     address: "",
     contract: "",
     name: "contracts/lib/MinimalForwarder.sol:MinimalForwarder",
   },
-  ERC1155NFT: {
+  GameNFT: {
     address: "",
     contract: "",
     name: "contracts/GameNFT.sol:GameNFT",
@@ -25,13 +25,13 @@ async function main() {
 
   fs.writeFileSync("scripts/verify.sh", "");
 
-  await deployContract("minimalForwarder");
+  await deployContract("MinimalForwarder");
 
   args.push({
-    name: "ERC1155NFT",
-    arguments: [contracts.minimalForwarder.address],
+    name: "GameNFT",
+    arguments: [contracts.MinimalForwarder.address],
   });
-  await deployContract("ERC1155NFT", ...args[args.length - 1].arguments);
+  await deployContract("GameNFT", ...args[args.length - 1].arguments);
 }
 
 async function deployContract(contract, ...args) {
@@ -78,6 +78,12 @@ async function writeArguments() {
       "module.exports = " + JSON.stringify(args[index].arguments) + ";"
     );
   }
+
+  let addresses = {};
+  for (let key in contracts) {
+    addresses[key] = contracts[key].address;
+  }
+  fs.writeFileSync("src/addresses.json", JSON.stringify(addresses));
 }
 
 main()
